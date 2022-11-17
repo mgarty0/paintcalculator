@@ -14,18 +14,39 @@ paintpermetre=1/6
 
 defaultcoatcount=1
 
-class wall:
+class area:
+	def __init__(self,width,height):
+		self.width=width
+		self.height=height
 	
-	width=1
-	height=1
+	def setwidth(self,width):
+		self.width=width
+	def setheight(self,height):
+		self.height=height
+	
+	def getwidth(self):
+		return self.width
+	def getheight(self):
+		return self.height
+	def getarea(self):
+		return self.width*self.height
+
+class hole(area):
+	def __init__(self,width,height):
+		super().__init__(width,height)
+	def getarea(self):
+		super().getarea()
+
+class wall(area):
+	
 	coats=-1 #use global value for -1
 	name=""
 	paintname=""
 
+	holes=[]
+
 	def __init__(self,width,height):
-		self.width=width
-		self.height=height
-		self.calculatepaint()
+		super().__init__(width,height)
 	
 	def setcoatcount(self,coats):
 		self.coats=coats
@@ -58,6 +79,10 @@ def editwall(index):
 				selectedwall.name=input("Input name: ")
 			case "coats":
 				selectedwall.coats=int(input("Input number of coats: "))
+			case "add hole":
+				pass
+			case "clear holes":
+				pass
 			case "back":
 				break
 			case _:
