@@ -41,7 +41,7 @@ class hole(area):
 
 class wall(area):
 	
-	def __init__(self,width,height):
+	def __init__(self,width=1,height=1):
 		super().__init__(width,height)
 		self.coats=-1 #use global value for -1
 		self.name=""
@@ -52,7 +52,18 @@ class wall(area):
 		listholes=[]
 		for hole in self.holes:
 			listholes.append((hole.width,hole.height))
-		return [self.name,self.paintname,self.coats,listholes]
+		return [self.width,self.height,self.name,self.paintname,self.coats,listholes]
+	
+	def loadlist(self,loadlist):
+		self.width=loadlist[0]
+		self.height=loadlist[1]
+		self.name=loadlist[2]
+		self.paintname=loadlist[3]
+		self.coats=loadlist[4]
+		self.holes=[]
+		for currenthole in loadlist[5]:
+			self.holes.append(hole(currenthole[0],currenthole[1]))
+	
 	def setcoats(self,coats):
 		self.coats=coats
 	
@@ -153,19 +164,24 @@ def save():
 #	try:
 		fp=open("save.txt","w")
 		serialwalls=[]
-		for wall in walls:
-			serialwalls.append(wall.savelist())
+		for tmpwall in walls:
+			serialwalls.append(tmpwall.savelist())
 		json.dump(serialwalls,fp)
 		fp.close()
 #	except:
 		pass
 def load():
-	try:
+#	try:
 		fp=open("save.txt","r")
-		
+		serialwalls=json.load(fp)
 		fp.close()
-	except:
-		pass
+		walls.clear()
+		for curwall in serialwalls:
+			tmpwall=wall(curwall)
+			tmpwall.loadlist(curwall)
+			walls.append(tmpwall)
+
+#	except:
 def paintmenu():
 	while True:
 		printpaintstatus()
