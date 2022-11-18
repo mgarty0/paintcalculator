@@ -10,6 +10,8 @@
 
 walls=[]
 
+paints=[]
+
 paintpermetre=1/6
 
 defaultcoatcount=1
@@ -130,14 +132,29 @@ def printwallinfo(index):
 	print("coats: "+selectedwall.coats)
 	print("Paint Name: "+selectedwall.paintname)
 def printstatus():
-	
 	totalpaint=0
 	for w in walls:
 		totalpaint=totalpaint+w.calculatepaint()
 	print("There are "+str(len(walls))+" walls")
 	print("Total paint needed: "+str(totalpaint))
 
+def printpaintstatus():
+	pass
 
+def paintmenu():
+	while True:
+		printpaintstatus()
+
+		print("Type one of the following commands:")
+		print("add")
+		print("back")
+
+		intent=input("-> ")
+		match intent:
+			case "add":
+				pass
+			case "back":
+				break
 def main():
 	initializewalls(int(input("How many walls do you need to paint? ")))
 	while True:
@@ -148,6 +165,7 @@ def main():
 		print("init")
 		print("edit")
 		print("remove")
+		print("paint")
 		print("status")
 		print("help")
 		print("exit")
@@ -162,6 +180,8 @@ def main():
 				editwall(int(input("Select wall to be edited: ")))
 			case "remove":
 				removewall(int(input("Select wall to be removed: ")))
+			case "paint":
+				paintmenu()
 			case "status":
 				printstatus()
 			case "help":
