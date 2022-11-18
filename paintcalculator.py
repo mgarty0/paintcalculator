@@ -1,16 +1,12 @@
 
 
-#some have windows door sockets ...
 #different paint types
 #different paint can size 1,2.5 5 10
 #10% margin
-#save/load
 
 import json
 
 walls=[]
-
-paints=[]
 
 paintpermetre=1/6
 
@@ -66,9 +62,12 @@ class wall(area):
 	
 	def setcoats(self,coats):
 		self.coats=coats
-	
 	def getcoats(self):
 		return self.coats
+	def setpaintname(self,name):
+		self.paintname=name
+	def getpaintname(self):
+		return self.paintname
 	
 	def calculatepaint(self):
 		if self.coats==-1: coats=defaultcoatcount
@@ -158,7 +157,32 @@ def printstatus():
 	print("Total paint needed: "+str(totalpaint))
 
 def printpaintstatus():
+	paintamount={}
+	for currentwall in walls:
+		currentpaint=currentwall.getpaintname()
+		if not currentpaint in paintamount:
+			paintamount[currentpaint]=0
+
+		paintamount[currentpaint]=paintamount[currentpaint]+currentwall.calculatepaint()
+	print("You will need:")
+	for paintname in paintamount:
+		print(paintname+": "+str(paintamount[paintname]))
 	pass
+
+def paintmenu():
+	while True:
+		printpaintstatus()
+
+		print("Type one of the following commands:")
+		print("add")
+		print("back")
+
+		intent=input("-> ")
+		match intent:
+			case "add":
+				pass
+			case "back":
+				break
 
 def save():
 #	try:
@@ -182,20 +206,7 @@ def load():
 			walls.append(tmpwall)
 
 #	except:
-def paintmenu():
-	while True:
-		printpaintstatus()
 
-		print("Type one of the following commands:")
-		print("add")
-		print("back")
-
-		intent=input("-> ")
-		match intent:
-			case "add":
-				pass
-			case "back":
-				break
 def main():
 	initializewalls(int(input("How many walls do you need to paint? ")))
 	while True:
@@ -235,6 +246,7 @@ def main():
 				pass
 			case "exit":
 				break
+	printpaintstatus()
 
 
 if __name__=="__main__":
