@@ -5,13 +5,6 @@
 
 import json
 
-walls=[]
-
-#paintcans=
-
-paintpermetre=1/6
-
-defaultcoatcount=1
 
 class paintcan:
 	def __init__(self,size):
@@ -83,6 +76,16 @@ class wall(area):
 		wallpaint=area*coats
 		wallpaint=wallpaint*paintpermetre
 		return wallpaint
+
+
+walls=[]
+
+paintcans=(paintcan(1),paintcan(2.5),paintcan(5),paintcan(10))
+
+paintpermetre=1/6
+
+defaultcoatcount=1
+
 
 def getarea(x,y):
 	return x*y
@@ -162,7 +165,15 @@ def printstatus():
 	print("Total paint needed: "+str(totalpaint))
 
 def paintamounttocans(paintamount):
-	paintcans={}
+	#least waste
+	localpaintamount=paintamount
+	paintcanlist={10:0,5:0,2.5:0,1:0}
+	for can in paintcanlist:
+		while can<localpaintamount:
+			paintcanlist[can]=paintcanlist[can]+1
+			localpaintamount=localpaintamount-can
+	if(paintamount>0): paintcanlist[1]=paintcanlist[1]+1
+	return paintcanlist
 
 def printpaintstatus():
 	paintamount={}
@@ -175,6 +186,11 @@ def printpaintstatus():
 	print("You will need:")
 	for paintname in paintamount:
 		print(paintname+": "+str(paintamount[paintname])+" Litres")
+		canoutputstring="Cans: "
+		paintcansneeded=paintamounttocans(paintamount[paintname])
+		for can in paintcansneeded:
+			canoutputstring=canoutputstring+str(paintcansneeded[can])+"X"+str(can)+"L "
+		print(canoutputstring)
 	pass
 
 def paintmenu():
@@ -215,7 +231,19 @@ def load():
 #	except:
 
 def configmenu():
-	pass
+	while True:
+		print("Which setting do you want to change?")
+		intent=input("->")
+		match intent:
+			case "default coat count":
+				defaultcoatcount=int(input("How many coats will be applied to walls by default"))
+			case "back":
+				break
+			case "":
+				break
+			case _:
+				print("")
+
 
 def main():
 	initializewalls(int(input("How many walls do you need to paint? ")))
@@ -265,5 +293,3 @@ def main():
 if __name__=="__main__":
 	main()
 
-
-#print(int(input("Enter wall height: "))*int(input("Enter wall width: "))/6)
