@@ -6,7 +6,7 @@
 #10% margin
 #save/load
 
-
+import json
 
 walls=[]
 
@@ -48,8 +48,16 @@ class wall(area):
 		self.paintname=""
 		self.holes=[]
 	
-	def setcoatcount(self,coats):
+	def savelist(self):
+		listholes=[]
+		for hole in self.holes:
+			listholes.append((hole.width,hole.height))
+		return [self.name,self.paintname,self.coats,listholes]
+	def setcoats(self,coats):
 		self.coats=coats
+	
+	def getcoats(self):
+		return self.coats
 	
 	def calculatepaint(self):
 		if self.coats==-1: coats=defaultcoatcount
@@ -142,15 +150,18 @@ def printpaintstatus():
 	pass
 
 def save():
-	try:
-		fp=open("save.txt","wb")
-		
+#	try:
+		fp=open("save.txt","w")
+		serialwalls=[]
+		for wall in walls:
+			serialwalls.append(wall.savelist())
+		json.dump(serialwalls,fp)
 		fp.close()
-	except:
+#	except:
 		pass
 def load():
 	try:
-		fp=open("save.txt","rb")
+		fp=open("save.txt","r")
 		
 		fp.close()
 	except:
