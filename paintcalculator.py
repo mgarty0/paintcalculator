@@ -35,18 +35,16 @@ class hole(area):
 	def __init__(self,width,height):
 		super().__init__(width,height)
 	def getarea(self):
-		super().getarea()
+		return super().getarea()
 
 class wall(area):
 	
-	coats=-1 #use global value for -1
-	name=""
-	paintname=""
-
-	holes=[]
-
 	def __init__(self,width,height):
 		super().__init__(width,height)
+		self.coats=-1 #use global value for -1
+		self.name=""
+		self.paintname=""
+		self.holes=[]
 	
 	def setcoatcount(self,coats):
 		self.coats=coats
@@ -55,7 +53,10 @@ class wall(area):
 		if self.coats==-1: coats=defaultcoatcount
 		else: coats=self.coats
 		area=getarea(self.width,self.height)
-		wallpaint=area*paintpermetre*coats
+		for wallhole in self.holes:
+			area=area-wallhole.getarea()
+		wallpaint=area*coats
+		wallpaint=wallpaint*paintpermetre
 		return wallpaint
 
 def getarea(x,y):
@@ -64,11 +65,21 @@ def getarea(x,y):
 def removewall(index):
 	walls.pop(index)
 
+def clearholes(index):
+	selectedwall=walls[index]
+	selectedwall.holes=[]
+
+def addhole(index):
+	selectedwall=walls[index]
+	width=int(input("Enter width of hole"))
+	height=int(input("Enter height of hole"))
+	selectedwall.holes.append(hole(width,height))
+
 def editwall(index):
 	selectedwall=walls[index]
 	
 	while True:
-		print("Enter one of: width, height, name, coats, back")
+		print("Enter one of: width, height, name, coats, add hole, clear holes. back")
 		intent=input("How do you want to edit the wall")
 		match intent:
 			case "width":
@@ -80,9 +91,9 @@ def editwall(index):
 			case "coats":
 				selectedwall.coats=int(input("Input number of coats: "))
 			case "add hole":
-				pass
+				addhole(index)
 			case "clear holes":
-				pass
+				clearholes(index)
 			case "back":
 				break
 			case _:
