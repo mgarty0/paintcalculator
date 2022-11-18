@@ -1,6 +1,5 @@
 
 
-#different paint types
 #different paint can size 1,2.5 5 10
 #10% margin
 
@@ -8,9 +7,15 @@ import json
 
 walls=[]
 
+#paintcans=
+
 paintpermetre=1/6
 
 defaultcoatcount=1
+
+class paintcan:
+	def __init__(self,size):
+		self.size=size
 
 class area:
 	def __init__(self,width,height):
@@ -156,6 +161,9 @@ def printstatus():
 	print("There are "+str(len(walls))+" walls")
 	print("Total paint needed: "+str(totalpaint))
 
+def paintamounttocans(paintamount):
+	paintcans={}
+
 def printpaintstatus():
 	paintamount={}
 	for currentwall in walls:
@@ -166,7 +174,7 @@ def printpaintstatus():
 		paintamount[currentpaint]=paintamount[currentpaint]+currentwall.calculatepaint()
 	print("You will need:")
 	for paintname in paintamount:
-		print(paintname+": "+str(paintamount[paintname]))
+		print(paintname+": "+str(paintamount[paintname])+" Litres")
 	pass
 
 def paintmenu():
@@ -176,7 +184,6 @@ def paintmenu():
 		print("Type one of the following commands:")
 		print("add")
 		print("back")
-
 		intent=input("-> ")
 		match intent:
 			case "add":
@@ -207,22 +214,26 @@ def load():
 
 #	except:
 
+def configmenu():
+	pass
+
 def main():
 	initializewalls(int(input("How many walls do you need to paint? ")))
 	while True:
 		printstatus()
 		
 		print("Type one of the following commands:")
-		print("add")
-		print("init")
-		print("edit")
-		print("remove")
-		print("paint")
-		print("save")
-		print("load")
-		print("status")
-		print("help")
-		print("exit")
+		print("add     --adds a wall")
+		print("init    --clears all walls and starts adding a batch of walls")
+		print("edit    --edit a wall")
+		print("remove  --remove a wall")
+		print("config  --access config menu")
+		print("paint   --access paint menu")
+		print("save    --save walls to file")
+		print("load    --load walls from file")
+		print("status  --prints brief report of paint needed")
+		print("help    --NA")
+		print("exit    --exits the program with a detailed report on paint needed")
 		
 		intent=input("-> ")
 		match intent:
@@ -234,6 +245,8 @@ def main():
 				editwall(int(input("Select wall to be edited: ")))
 			case "remove":
 				removewall(int(input("Select wall to be removed: ")))
+			case "config":
+				configmenu()
 			case "paint":
 				paintmenu()
 			case "save":
