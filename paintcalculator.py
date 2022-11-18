@@ -141,6 +141,20 @@ def printstatus():
 def printpaintstatus():
 	pass
 
+def save():
+	try:
+		fp=open("save.txt","wb")
+		
+		fp.close()
+	except:
+		pass
+def load():
+	try:
+		fp=open("save.txt","rb")
+		
+		fp.close()
+	except:
+		pass
 def paintmenu():
 	while True:
 		printpaintstatus()
@@ -166,6 +180,8 @@ def main():
 		print("edit")
 		print("remove")
 		print("paint")
+		print("save")
+		print("load")
 		print("status")
 		print("help")
 		print("exit")
@@ -182,6 +198,10 @@ def main():
 				removewall(int(input("Select wall to be removed: ")))
 			case "paint":
 				paintmenu()
+			case "save":
+				save()
+			case "load":
+				load()
 			case "status":
 				printstatus()
 			case "help":
