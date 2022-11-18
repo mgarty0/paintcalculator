@@ -16,3 +16,16 @@ def test_wall_class_1():
 	assert wall.getarea()==32
 	assert wall.getcoats()==-1
 
+def test_paintamounttocans_1():
+	paintamount=pc.paintamounttocans(30.4)
+	assert paintamount[10]==3
+	assert paintamount[5]==0
+	assert paintamount[2.5]==0
+	assert paintamount[1]==1
+
+def test_paintamounttocans_2():
+	paintamount=pc.paintamounttocans(2.4)
+	assert paintamount[10]==0
+	assert paintamount[5]==0
+	assert paintamount[2.5]==1
+	assert paintamount[1]==0

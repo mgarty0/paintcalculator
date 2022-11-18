@@ -1,6 +1,5 @@
 
 
-#different paint can size 1,2.5 5 10
 #10% margin
 
 import json
@@ -173,6 +172,9 @@ def paintamounttocans(paintamount):
 			paintcanlist[can]=paintcanlist[can]+1
 			localpaintamount=localpaintamount-can
 	if(paintamount>0): paintcanlist[1]=paintcanlist[1]+1
+	if(paintcanlist[1]>=3):
+		paintcanlist[1]=paintcanlist[1]-3
+		paintcanlist[2.5]=paintcanlist[2.5]+1
 	return paintcanlist
 
 def printpaintstatus():
