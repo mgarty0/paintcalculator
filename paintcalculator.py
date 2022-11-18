@@ -71,8 +71,8 @@ def clearholes(index):
 
 def addhole(index):
 	selectedwall=walls[index]
-	width=int(input("Enter width of hole"))
-	height=int(input("Enter height of hole"))
+	width=int(input("Enter width of hole: "))
+	height=int(input("Enter height of hole: "))
 	selectedwall.holes.append(hole(width,height))
 
 def editwall(index):
@@ -80,7 +80,8 @@ def editwall(index):
 	
 	while True:
 		print("Enter one of: width, height, name, coats, add hole, clear holes. back")
-		intent=input("How do you want to edit the wall")
+		print("How do you want to edit the wall?")
+		intent=input("-> ")
 		match intent:
 			case "width":
 				selectedwall.width=int(input("Input new width: "))
@@ -143,9 +144,12 @@ def main():
 		printstatus()
 		
 		print("Type one of the following commands:")
-		print("init")
 		print("add")
+		print("init")
+		print("edit")
+		print("remove")
 		print("status")
+		print("help")
 		print("exit")
 		
 		intent=input("-> ")
