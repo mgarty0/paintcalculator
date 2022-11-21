@@ -31,4 +31,9 @@ def test_paintamounttocans_2():
 	assert paintamount[2.5]==1
 	assert paintamount[1]==0
 
-
+def test_paintamounttocans_3():
+	paintamount=pc.paintamounttocans(5.9)
+	assert paintamount[10]==0
+	assert paintamount[5]==1
+	assert paintamount[2.5]==0
+	assert paintamount[1]==1
