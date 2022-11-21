@@ -1,9 +1,7 @@
 
-
 #10% margin
 
 import json
-
 
 class paintcan:
 	def __init__(self,size):
@@ -85,6 +83,7 @@ paintpermetre=1/6
 
 defaultcoatcount=1
 
+savefilename="save"
 
 def getarea(x,y):
 	return x*y
@@ -97,50 +96,56 @@ def clearholes(index):
 	selectedwall.holes=[]
 
 def addhole(index):
-	selectedwall=walls[index]
-	width=int(input("Enter width of hole: "))
-	height=int(input("Enter height of hole: "))
-	selectedwall.holes.append(hole(width,height))
+	try:
 
+		selectedwall=walls[index]
+		width=int(input("Enter width of hole: "))
+		height=int(input("Enter height of hole: "))
+		selectedwall.holes.append(hole(width,height))
+	except:
+		print("Error adding hole")
 def editwall(index):
 	selectedwall=walls[index]
 	
 	while True:
-		print("Enter one of: width, height, name, coats, add hole, clear holes. back")
-		print("How do you want to edit the wall?")
-		intent=input("-> ")
-		match intent:
-			case "width":
-				selectedwall.width=int(input("Input new width: "))
-			case "height":
-				selectedwall.height=int(input("Input new height: "))
-			case "name":
-				selectedwall.name=input("Input name: ")
-			case "coats":
-				selectedwall.coats=int(input("Input number of coats: "))
-			case "add hole":
-				addhole(index)
-			case "clear holes":
-				clearholes(index)
-			case "back":
-				break
-			case _:
-				print("Command not understood")
-
+		try:
+			print("Enter one of: width, height, name, coats, add hole, clear holes. back")
+			print("How do you want to edit the wall?")
+			intent=input("-> ")
+			match intent:
+				case "width":
+					selectedwall.width=int(input("Input new width: "))
+				case "height":
+					selectedwall.height=int(input("Input new height: "))
+				case "name":
+					selectedwall.name=input("Input name: ")
+				case "coats":
+					selectedwall.coats=int(input("Input number of coats: "))
+				case "add hole":
+					addhole(index)
+				case "clear holes":
+					clearholes(index)
+				case "back":
+					break
+				case _:
+					print("Command not understood")
+		except:
+			print("Error: Input not recognised")
 def addwall():
-	width=int(input("Enter wall width in Meters: "))
-	height=int(input("Enter wall height in Meters: "))
-	newwall=wall(width,height)
-
-	newwall.name=input("Set an optional name for this wall or leave blank: ")
-	newwall.paintname=input("Set an optional name for the paint to be used or leave blank: ")
-	numcoats=input("Choose the number of coats of paint or leave blank for default ("+str(defaultcoatcount)+"): ")
-	if(numcoats==""): numcoats=-1
-	else: numcoats=int(numcoats)
-	newwall.coats=numcoats
-	print("Adding Wall with id "+str(len(walls)))
-	walls.append(newwall)
-
+	try:
+		width=int(input("Enter wall width in Meters: "))
+		height=int(input("Enter wall height in Meters: "))
+		newwall=wall(width,height)
+		newwall.name=input("Set an optional name for this wall or leave blank: ")
+		newwall.paintname=input("Set an optional name for the paint to be used or leave blank: ")
+		numcoats=input("Choose the number of coats of paint or leave blank for default ("+str(defaultcoatcount)+"): ")
+		if(numcoats==""): numcoats=-1
+		else: numcoats=int(numcoats)
+		newwall.coats=numcoats
+		print("Adding Wall with id "+str(len(walls)))
+		walls.append(newwall)
+	except:
+		print("Error adding wall, Try again")
 
 
 def initializewalls(wallcount):
@@ -195,33 +200,33 @@ def printpaintstatus():
 		print(canoutputstring)
 	pass
 
-def paintmenu():
-	while True:
-		printpaintstatus()
-
-		print("Type one of the following commands:")
-		print("add")
-		print("back")
-		intent=input("-> ")
-		match intent:
-			case "add":
-				pass
-			case "back":
-				break
+#def paintmenu():
+#	while True:
+#		printpaintstatus()
+#
+#		print("Type one of the following commands:")
+#		print("add")
+#		print("back")
+#		intent=input("-> ")
+#		match intent:
+#			case "add":
+#				pass
+#			case "back":
+#				break
 
 def save():
-#	try:
-		fp=open("save.txt","w")
+	try:
+		fp=open(savefilename+".txt","w")
 		serialwalls=[]
 		for tmpwall in walls:
 			serialwalls.append(tmpwall.savelist())
 		json.dump(serialwalls,fp)
 		fp.close()
-#	except:
-		pass
+	except:
+		print("Error saving to file")
 def load():
-#	try:
-		fp=open("save.txt","r")
+	try:
+		fp=open(savefilename+".txt","r")
 		serialwalls=json.load(fp)
 		fp.close()
 		walls.clear()
@@ -230,65 +235,82 @@ def load():
 			tmpwall.loadlist(curwall)
 			walls.append(tmpwall)
 
-#	except:
-
+	except:
+		print("Error loading from file (Does the file exist?")
 def configmenu():
+	global defaultcoatcount
+	global savefilename
 	while True:
-		print("Which setting do you want to change?")
-		intent=input("->")
-		match intent:
-			case "default coat count":
-				defaultcoatcount=int(input("How many coats will be applied to walls by default"))
-			case "back":
-				break
-			case "":
-				break
-			case _:
-				print("")
+		try:
+			print("Which setting do you want to change?")
+			print("Valid values are:")
+			print("default coat count")
+			print("savefile")
+			print("back")
+			intent=input("->")
+			match intent:
+				case "default coat count":
+					defaultcoatcount=int(input("How many coats will be applied to walls by default"))
+				case "savefile":
+					savefilename=input("Enter new name for save file: ")
+				case "back":
+					break
+				case "":
+					break
+				case _:
+					print("")
+		except:
+			print("Error: Input not recognised")
 
 
 def main():
-	initializewalls(int(input("How many walls do you need to paint? ")))
+	try:
+		initializewalls(int(input("How many walls do you need to paint (or blank to continue)? ")))
+	except:
+		pass
 	while True:
-		printstatus()
-		
-		print("Type one of the following commands:")
-		print("add     --adds a wall")
-		print("init    --clears all walls and starts adding a batch of walls")
-		print("edit    --edit a wall")
-		print("remove  --remove a wall")
-		print("config  --access config menu")
-		print("paint   --access paint menu")
-		print("save    --save walls to file")
-		print("load    --load walls from file")
-		print("status  --prints brief report of paint needed")
-		print("help    --NA")
-		print("exit    --exits the program with a detailed report on paint needed")
-		
-		intent=input("-> ")
-		match intent:
-			case "add":
-				addwall()
-			case "init":
-				initializewalls(int(input("How many walls do you need to paint? ")))
-			case "edit":
-				editwall(int(input("Select wall to be edited: ")))
-			case "remove":
-				removewall(int(input("Select wall to be removed: ")))
-			case "config":
-				configmenu()
-			case "paint":
-				paintmenu()
-			case "save":
-				save()
-			case "load":
-				load()
-			case "status":
-				printstatus()
-			case "help":
-				pass
-			case "exit":
-				break
+		try:
+			printstatus()
+			
+			print("Type one of the following commands:")
+			print("add     --adds a wall")
+			print("init    --clears all walls and starts adding a batch of walls")
+			print("edit    --edit a wall")
+			print("remove  --remove a wall")
+			print("config  --access config menu")
+#			print("paint   --access paint menu")
+			print("save    --save walls to file")
+			print("load    --load walls from file")
+			print("status  --prints brief report of paint needed")
+#			print("help    --NA")
+			print("exit    --exits the program with a detailed report on paint needed")
+			
+			intent=input("-> ")
+			match intent:
+				case "add":
+					addwall()
+				case "init":
+					initializewalls(int(input("How many walls do you need to paint? ")))
+				case "edit":
+					editwall(int(input("Select wall to be edited: ")))
+				case "remove":
+					removewall(int(input("Select wall to be removed: ")))
+				case "config":
+					configmenu()
+#				case "paint":
+#					paintmenu()
+				case "save":
+					save()
+				case "load":
+					load()
+				case "status":
+					printstatus()
+				case "help":
+					pass
+				case "exit":
+					break
+		except:
+			print("Error: Input not recognised")
 	printpaintstatus()
 
 
