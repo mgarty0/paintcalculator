@@ -4,8 +4,13 @@
 import json
 
 class paintcan:
-	def __init__(self,size):
+	def __init__(self,size,price):
 		self.size=size
+		self.price=price
+	def setprice(self,price):
+		self.price=price
+	def getprice(self):
+		return self.price
 
 class area:
 	def __init__(self,width,height):
@@ -77,7 +82,7 @@ class wall(area):
 
 walls=[]
 
-paintcans=(paintcan(1),paintcan(2.5),paintcan(5),paintcan(10))
+paintcans=(paintcan(1,10),paintcan(2.5,16),paintcan(5,18),paintcan(10,24))
 
 paintpermetre=1/6
 
@@ -99,8 +104,8 @@ def addhole(index):
 	try:
 
 		selectedwall=walls[index]
-		width=int(input("Enter width of hole: "))
-		height=int(input("Enter height of hole: "))
+		width=float(input("Enter width of hole: "))
+		height=float(input("Enter height of hole: "))
 		selectedwall.holes.append(hole(width,height))
 	except:
 		print("Error adding hole")
@@ -133,8 +138,8 @@ def editwall(index):
 			print("Error: Input not recognised")
 def addwall():
 	try:
-		width=int(input("Enter wall width in Meters: "))
-		height=int(input("Enter wall height in Meters: "))
+		width=float(input("Enter wall width in Meters: "))
+		height=float(input("Enter wall height in Meters: "))
 		newwall=wall(width,height)
 		newwall.name=input("Set an optional name for this wall or leave blank: ")
 		newwall.paintname=input("Set an optional name for the paint to be used or leave blank: ")
@@ -282,7 +287,7 @@ def main():
 #			print("paint   --access paint menu")
 			print("save    --save walls to file")
 			print("load    --load walls from file")
-			print("status  --prints brief report of paint needed")
+#			print("status  --prints brief report of paint needed")
 #			print("help    --NA")
 			print("exit    --exits the program with a detailed report on paint needed")
 			
@@ -304,8 +309,8 @@ def main():
 					save()
 				case "load":
 					load()
-				case "status":
-					printstatus()
+#				case "status":
+#					printstatus()
 				case "help":
 					pass
 				case "exit":
