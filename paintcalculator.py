@@ -3,9 +3,9 @@
 
 import json
 
-#class paintcan:
-#	def __init__(self,size):
-#		self.size=size
+class paintcan:
+	def __init__(self,size):
+		self.size=size
 
 class area:
 	def __init__(self,width,height):
